@@ -1,59 +1,338 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Grand Horizon Hotel Management System — Project Documentation
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
+Grand Horizon is a Laravel-based hotel management and reservation platform with:
 
-## About Laravel
+- Public hotel booking website
+- Guest reservation system
+- Admin dashboard
+- Room management
+- Reservation management
+- Authentication and role-based access
+- PostgreSQL database
+- TailwindCSS frontend styling
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Backend
+- PHP 8.2
+- Laravel 12
+- PostgreSQL
+- Eloquent ORM
+- Laravel Breeze (authentication)
 
-## Learning Laravel
+## Frontend
+- Blade templates
+- TailwindCSS
+- Vite
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Tooling
+- Composer
+- NPM
+- Git + GitHub
+- XAMPP (PHP runtime)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+# Authentication
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Authentication is handled using Laravel Breeze.
 
-### Premium Partners
+Features:
+- Login
+- Register
+- Logout
+- Session handling
+- Admin middleware
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Admin Middleware
 
-## Contributing
+```php
+if (!auth()->check() || !auth()->user()->is_admin) {
+    abort(403, 'Access denied.');
+}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+# Database Structure
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Users
 
-## Security Vulnerabilities
+```text
+users
+- id
+- name
+- email
+- password
+- is_admin
+- created_at
+- updated_at
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Rooms
 
-## License
+```text
+rooms
+- id
+- room_number
+- type
+- description
+- price_per_night
+- capacity
+- floor
+- status
+- amenities
+- created_at
+- updated_at
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Guests
+
+```text
+guests
+- id
+- first_name
+- last_name
+- email
+- phone
+- created_at
+- updated_at
+```
+
+## Reservations
+
+```text
+reservations
+- id
+- reservation_number
+- room_id
+- guest_id
+- check_in_date
+- check_out_date
+- guests_count
+- total_amount
+- paid_amount
+- payment_status
+- status
+- special_requests
+- created_at
+- updated_at
+```
+
+## Payments
+
+```text
+payments
+- id
+- reservation_id
+- amount
+- type
+- paid_at
+- created_at
+- updated_at
+```
+
+---
+
+# Main Features
+
+## Public Features
+
+### Homepage
+- TailwindCSS design
+- Hero section
+- Browse rooms button
+
+### Room Browsing
+Users can:
+- View rooms
+- Filter by:
+  - Type
+  - Price
+  - Availability
+
+### Reservation Booking
+Users can:
+- Select room
+- Choose dates
+- Enter guest info
+- Create reservation
+
+### My Reservations
+Authenticated users can:
+- View their reservations
+- Check reservation history
+
+---
+
+# Admin Features
+
+## Dashboard
+Admin dashboard includes:
+
+- Total rooms
+- Available rooms
+- Occupied rooms
+- Total guests
+- Active reservations
+- Revenue statistics
+- Upcoming check-ins
+
+## Room Management
+Admin can:
+- Create rooms
+- Edit rooms
+- Delete rooms
+- View room history
+
+## Reservation Management
+Admin can:
+- View reservations
+- Check-in guests
+- Check-out guests
+- Cancel reservations
+- Add payments
+
+---
+
+# Setup Instructions
+
+## 1. Clone Repository
+
+```bash
+git clone https://github.com/stefanrikaloski44/ISOK.git
+```
+
+## 2. Install PHP Dependencies
+
+```bash
+composer install
+```
+
+## 3. Install Frontend Dependencies
+
+```bash
+npm install
+```
+
+## 4. Create Environment File
+
+```bash
+cp .env.example .env
+```
+
+Windows PowerShell:
+
+```powershell
+copy .env.example .env
+```
+
+## 5. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+## 6. Run Migrations
+
+```bash
+php artisan migrate
+```
+
+## 7. Create Storage Link
+
+```bash
+php artisan storage:link
+```
+
+## 8. Start Vite
+
+```bash
+npm run dev
+```
+
+## 9. Start Laravel Server
+
+```bash
+php artisan serve
+```
+
+---
+
+# Creating an Admin User
+
+Using Tinker:
+
+```bash
+php artisan tinker
+```
+
+```php
+\App\Models\User::create([
+    'name' => 'Admin',
+    'email' => 'admin@example.com',
+    'password' => bcrypt('password123'),
+    'is_admin' => true,
+]);
+```
+
+---
+
+# Important Laravel Commands
+
+## Clear Route Cache
+
+```bash
+php artisan route:clear
+```
+
+## Clear Application Cache
+
+```bash
+php artisan cache:clear
+```
+
+## Clear Config Cache
+
+```bash
+php artisan config:clear
+```
+
+## View Routes
+
+```bash
+php artisan route:list
+```
+
+## Run Migrations
+
+```bash
+php artisan migrate
+```
+
+## Rollback Migrations
+
+```bash
+php artisan migrate:rollback
+```
+
+---
+
+# UI Design Notes
+
+## Design Style
+- Luxury hotel aesthetic
+- Dark hero section
+- Gold accent palette
+- Minimalistic cards
+- Tailwind utility-first styling
+
+## Homepage
+- Fullscreen hero section
+- Non-scrollable layout
+- Sticky navigation
+- Footer integrated into layout
+
